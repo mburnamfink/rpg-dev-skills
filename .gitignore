@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Local Claude Code settings
+.claude/settings.local.json

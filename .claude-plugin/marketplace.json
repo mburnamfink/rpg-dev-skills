@@ -1,0 +1,13 @@
+{
+  "name": "rpg-dev-skills",
+  "owner": {
+    "name": "Michael Burnam-Fink"
+  },
+  "plugins": [
+    {
+      "name": "rpg-dev-skills",
+      "source": "./",
+      "description": "A trio of skills for developing, critiquing, and revising tabletop RPG adventures."
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "name": "rpg-dev-skills",
+  "description": "Develop, critique, revise, and publish tabletop RPG adventures with Claude.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Michael Burnam-Fink"
+  }
+}
