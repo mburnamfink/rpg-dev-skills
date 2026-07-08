@@ -17,7 +17,8 @@ The natural loop: **dev → critic → (answer the critique) → revise → publ
 It's useful to create rules, setting, and campaign lore reference docs which the skills can be pointed to. Claude can meaningfully summarize large documents into compact representations 
 
 ```
-/rpg-dev let's create an epic fantasy tale of sacrifice and triumph over evil using @DnD2024.md and @ForgottenRealms.md and @SwordCoastChampions.md
+/rpg-dev let's create an epic fantasy tale of sacrifice and triumph over evil 
+using @DnD2024.md and @ForgottenRealms.md and @SwordCoastChampions.md
 ```
 
 ## Install
