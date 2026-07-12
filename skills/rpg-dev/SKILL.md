@@ -33,7 +33,7 @@ Work top-down. Do not advance a layer until the user is satisfied with the curre
    - Role in the premise, and what they **want**
    - A **secret** or complication the players can uncover
    - Voice/manner (one line the GM can improvise from)
-   - Visual description. Hair cut, face, build, style and key items of dress.
+   - Visual description. Hair cut, face, build, style and key items of dress. Suggest some actors who'd be cast as this NPC.
    - Be creative with names no Elara, Kael, Thorne, Voss, no -ae-, no noun-surnames. Name the linguistic origin of each name proposed.
    Start with the 2–4 NPCs the premise can't exist without; add minor ones later.
 
