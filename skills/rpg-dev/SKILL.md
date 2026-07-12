@@ -26,6 +26,7 @@ Work top-down. Do not advance a layer until the user is satisfied with the curre
    - What's at stake / what can change here
    - Ways in and ways out (how players arrive, how it resolves or escalates)
    - Complications the GM can drop in
+   - Sensory details: What does this place look like, sound like, smell like
    Sequence scenes loosely — offer branches, not a railroad.
 
 3. **NPCs** — the people who drive the situation. For each, develop:
