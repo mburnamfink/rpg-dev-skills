@@ -35,6 +35,7 @@ Work top-down. Do not advance a layer until the user is satisfied with the curre
    - Voice/manner (one line the GM can improvise from)
    - Visual description. Hair cut, face, build, style and key items of dress. Suggest some actors who'd be cast as this NPC.
    - Be creative with names no Elara, Kael, Thorne, Voss, no -ae-, no noun-surnames. Name the linguistic origin of each name proposed.
+   - If the project provides a name generator (e.g. a `scripts/gen-names.py` or similar tool documented in the repo's CLAUDE.md), call it to source PC/NPC names instead of inventing them unaided — then pick and refine from its output.
    Start with the 2–4 NPCs the premise can't exist without; add minor ones later.
 
 4. **Persist** — write everything to the adventure file after each layer, not just at
