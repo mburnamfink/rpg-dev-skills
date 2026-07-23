@@ -49,11 +49,13 @@ Per-project instead of global? Symlink into a project's `.claude/skills/` the sa
 
 ## Dependencies
 
-Only `rpg-publish`'s render step needs anything beyond Claude Code:
+Only `rpg-publish`'s render step needs anything beyond Claude Code. The scripts live in
+`skills/rpg-publish/scripts/`:
 
-- `scripts/pdf.sh` — [pandoc](https://pandoc.org/) with a XeLaTeX engine
-- `scripts/wiki.sh` — [pandoc](https://pandoc.org/) (browsable HTML wiki; no LaTeX needed)
-- `scripts/render-cards.sh` — headless Chrome/Chromium
+- `pdf.sh` — [pandoc](https://pandoc.org/) with a XeLaTeX engine
+- `wiki.sh` — [pandoc](https://pandoc.org/) (browsable HTML wiki; no LaTeX needed)
+- `gen-cards.py` — Python 3 (pregen character cards: Markdown → HTML)
+- `render-cards.sh` — headless Chrome/Chromium (turns the `gen-cards.py` HTML into a one-page PDF)
 
 The rest of the workflow is pure Markdown and needs nothing.
 
