@@ -1,79 +1,117 @@
 ---
 name: rpg-publish
-description: Condense a finished, critique-revised adventure into a tight, dual-audience, publish-ready Markdown document — Description, Player Pitch, GM Pitch, GM Summary, NPCs, Scenes, optional Pregens and Handouts, GM Notes — with the GM/Player audience wall (ADR 0002 tags) and hyperlinked cross-references, then offer to render it to a print PDF and a hyperlinked wiki. Use when the author wants to finalize, publish, condense, tighten, or make an adventure shareable/table-ready; NOT for authoring (rpg-dev), critique (rpg-critic), or applying a critique (rpg-revise).
+description: Condense a finished, critique-revised adventure into a run-at-the-table document — a read-once PREP layer that quarantines the reasoning, and a TABLE layer of pure primitives (register-tagged read-aloud, mechanics, dialog, a Choices→consequence table, and a Complications bank). Dual-audience with the GM/Player wall (ADR 0002) and hyperlinked cross-references, then offer to render to print PDF and a wiki. Use when the author wants to finalize, publish, condense, tighten, or make an adventure shareable/table-ready; NOT for authoring (rpg-dev), critique (rpg-critic), or applying a critique (rpg-revise).
 ---
 
-# RPG Publish — Condense an Adventure for Sharing
+# RPG Publish — Condense an Adventure to What You Run at the Table
 
-Turn a discursive adventure — one that's been through [rpg-dev](../rpg-dev/SKILL.md)
-and the [rpg-critic](../rpg-critic/SKILL.md)/[rpg-revise](../rpg-revise/SKILL.md) loop —
-into a **tight, playable, shareable document**: no extraneous prose, a clean GM/Player
-wall, and hyperlinked cross-references, ready for print and as an electronic reference.
+Turn a discursive adventure — one that's been through [rpg-dev](../rpg-dev/SKILL.md) and
+the [rpg-critic](../rpg-critic/SKILL.md)/[rpg-revise](../rpg-revise/SKILL.md) loop — into a
+**run-at-the-table document**. You are **compressing and reorganizing, not rewriting**. The
+critique loop already decided what the adventure *says*; publish decides how little a GM has to
+read, mid-scene, to run it.
 
-You are **compressing and reorganizing, not rewriting**. The critique loop already
-decided what the adventure *says*; publish decides how little it can take to say it.
-Golden rule: **a GM must be able to run the whole session from the published doc alone.**
+## The golden rule (this is the whole skill)
+
+**At the table, the GM's eye lands on a beat and knows — in seconds, without reading a paragraph —
+what to say, what to roll, and what the players' choices do.**
+
+The failure mode is optimizing for *comprehension* (a GM who reads the doc understands the
+design) instead of *running* (a GM mid-scene, under time pressure, acts). Comprehension is a
+**prep-time** goal and it gets **one** home — the PREP layer, read once. Everything else is a
+**table-time** primitive.
+
+## The two layers
+
+**PREP — read once, never at the table.** All the *why*: the real situation, why each mechanic is
+what it is, the causal chains, the reveal logic. This is the ONE place reasoning lives. It appears
+as:
+- a top-level **GM Briefing** (the whole truth in tight beats — the *only* place the truth is
+  explained), and
+- short `> PREP` note-boxes at the head of an NPC or scene when a beat needs its *why* to run right.
+
+**TABLE — glance during play.** Everything else, as primitives. No prose paragraph a GM must read
+while the players wait. See the field kit below.
+
+**The compression target is REASONING, not flavor.** Cut causal chains, restatement, and authorial
+reassurance. **Never** cut read-aloud, an NPC's Look, dialog lines, clock values, or a
+consequence — those are what you run. When in doubt: if it changes what happens at the table, keep
+it; if it explains *why* it happens, move it to PREP and link.
+
+## The table field kit
+
+**Scenes** — in play order, floating scenes marked. Each scene, in this order:
+- **Read-aloud** — see the read-aloud craft rules below. Boxed, verbatim, register-tagged.
+- **Situation** — 1–2 lines: what's true here and what's coming. Not backstory (that's PREP).
+- **Mechanics** — clocks (size · what fills · what it triggers), numbers, rolls, and any
+  **mandatory beat** ("fires no matter what"). Bulleted, scannable.
+- **Choices → consequence** — a **table**: *if the crew does X → this clock/flag/scene changes.*
+  This is the load-bearing field. It answers "what are the specific choices players might make and
+  what does each do." Concrete state changes, not theme.
+- **Complications** — the Blades consequence-bank: a bulleted stock of ready complications to drop
+  on a mixed/bad roll or when the scene needs teeth. Distinct from Choices→consequence (that's
+  *players choose X*; this is *loose ammo you spend*). Mark any that **must fire**.
+- **Dialog** — verbatim NPC lines for this scene, attributed, one per bullet.
+- **Exit** — where each way out leads; the cut point; the link to the next scene.
+
+**NPCs** — lead with the majors. Each:
+- **Look** — the fixed sensory signature, **preserved near-losslessly**. This is the one field where
+  evocative specificity earns its length. Keep the telling physical detail and the character it
+  reveals; do not telegraph it into a nonsense shorthand.
+- **Want** — one line. The driving goal.
+- **Lever** — what the crew can *do* with them: the fact/tool/opening they offer, and (for Blades
+  cargo/pressure NPCs) the **As cargo / As pressure** complication + one-use lifeline, with its cost.
+- **Lines** — 2–4 verbatim dialog lines, collected here (not scattered), each tagged with its beat.
+- Put the NPC's *secret and why* in a `> PREP` box or link it to the GM Briefing — **not** as a prose
+  "Secret" field restated three times across the doc.
+
+**Also:** Description + Player Pitch (player-facing sell, spoiler-free), a scannable **GM Summary**
+(clocks / cast one-liners / the shape / the 3–6 things that break the session if forgotten), optional
+**Pregens** and **Handouts**, and a terse **GM Notes** for rulings and dials that aren't any one
+scene's. State each fact **once**, in its right home, and link.
+
+## Read-aloud craft (the author called this out specifically)
+
+- **Verbatim and speakable.** Read-aloud is text the GM says out loud, not a description of the
+  scene for the GM to paraphrase. Write the words.
+- **Key thing first.** Lead with the load-bearing sensory hit; let the rest follow.
+- **Register-tag it, and match the scene's tempo.** `*(slow, sensory)*` when the crew has time to
+  look; `*(clipped — chaos)*` when it's fast and dangerous — short, 1–2 punches, sentence fragments.
+  A scene that shifts tempo gets **two boxes** (e.g. a calm arrival and a hot turn), each tagged.
+- Keep it short. A read-aloud box is a hit, not a paragraph of scene-setting.
 
 ## Workflow — one pass, then review
 
-1. **Read everything first.** The source adventure, and its `*-critique*.md` if present
-   (so you honour choices the author already made). Confirm the source path, then write to
-   `<adventure-slug>-published.md` **beside the source** — never touch the source file.
-2. **Draft the whole document in one pass** into the canonical structure
-   ([TEMPLATE.md](TEMPLATE.md)): Description, Player Pitch, GM Pitch, GM Summary, NPCs,
-   Scenes, optional Pregens, optional Handouts, GM Notes & Lore. Condense, tag audience,
-   cross-link (below) as you go.
-3. **Report the cuts.** After writing, give a short list of what you compressed, merged,
-   or dropped — especially judgment calls — so the author can restore anything load-bearing.
-   Don't bury a real cut; list it.
-4. **Offer to render.** The render scripts ship with this skill under `scripts/` (resolve
-   relative to this SKILL.md): `scripts/pdf.sh <file>` for the print packet;
-   `scripts/gen-cards.py` for pregen selection cards; `scripts/render-cards.sh` to turn a
-   card HTML into a one-page PDF; the wiki HTML for the hyperlinked reference. Offer, don't
-   assume. (`pdf.sh` needs `pandoc` + `xelatex`; `render-cards.sh` needs headless Chrome.)
-
-## What to cut, what to keep
-
-**Cut** — the discursive residue, aggressively:
-- The same fact restated across Premise, an NPC block, and GM Notes → state it **once**, in
-  its right home, and link to it.
-- Prep meta-commentary and reassurance ("toolbox roster, not a checklist", "play it as
-  tragedy not a gotcha") → compress to a one-line GM steer, or drop.
-- Hedging, parenthetical asides that duplicate the main text, authoring scaffolding
-  (name etymologies, resolved Open Threads).
-
-**Keep** — everything table-relevant, losslessly:
-- Every NPC's Look / Wants / Secret / Voice, and every scripted or improv dialog line.
-- Every clock (size, fill, trigger), number, stat block, scene branch, and — critically —
-  **each scene's outcome→consequence**: how the way a scene resolves changes what follows.
-- The reveal order and what the crew know vs. discover.
-
-If something load-bearing is *missing* from the source (an absent clock value, a stat block),
-**flag it in the cut report — never invent it.** Preserve the module's terse, table-ready voice.
+1. **Read everything first** — the source and any `*-critique*.md` (honour choices already made).
+   Confirm the source path; write to `<slug>-published.md` **beside the source**; never touch the source.
+2. **Draft the whole document in one pass** into the structure above ([TEMPLATE.md](TEMPLATE.md)).
+   Quarantine reasoning into PREP; make every table field a primitive; tag audience; cross-link.
+3. **Report the cuts** — a short list of what you compressed, merged, or moved to PREP, especially
+   judgment calls, so the author can restore anything load-bearing. Never bury a real cut.
+4. **Offer to render.** Scripts ship under `scripts/` (resolve relative to this SKILL.md):
+   `scripts/pdf.sh <file>` (print packet; needs `pandoc`+`xelatex`), `scripts/gen-cards.py` (pregen
+   cards), `scripts/render-cards.sh` (card HTML → one-page PDF; needs headless Chrome), plus the wiki
+   HTML. Offer, don't assume.
 
 ## The audience wall (ADR 0002 — fail-safe)
 
-Content is **GM by default**. Promote only the genuinely player-facing:
-- **Player-facing:** Description, Player Pitch, and each Pregen's player card fields →
-  tag the heading `{.player}` (cascades to nested headings until the next same-or-higher one).
-- **Demote a spoiler** sitting inside a player section back to GM: `::: gm … :::` (block) or
-  `[…]{.gm}` (inline).
-- **When unsure whether something is a spoiler, leave it GM.** A secret reaches players only by
-  deliberate promotion; a forgotten tag hides, never leaks. The Player Pitch must not give away
-  a twist.
+Content is **GM by default**. Promote only genuinely player-facing content:
+- **Player-facing:** Description, Player Pitch, each Pregen's player card fields → tag the heading
+  `{.player}` (cascades to nested headings until the next same-or-higher one).
+- **Demote a spoiler** inside a player section back to GM: `::: gm … :::` (block) or `[…]{.gm}` (inline).
+- **When unsure, leave it GM.** A `> PREP` box is GM by definition. A forgotten tag hides, never leaks.
 
 ## Cross-linking (structured references only)
 
-Linkify **structured** references — `(Scene 8)`, an NPC named in a scene, `GM Notes: X`, a named
-clock — with markdown anchors: `[Scene 8](#8-grandfathers-hand)`, `[Roke](#colonel-ambrose-roke)`.
-**Never auto-link bare names in prose.** Put `\newpage` before each major section so the print PDF
-paginates cleanly.
+Linkify **structured** references — `(Scene 3)`, a named NPC block, `GM Briefing`, a named clock —
+with markdown anchors: `[Scene 3](#3-the-yammie-protest)`, `[Cordelia](#cordelia-ashworth)`. **Never
+auto-link bare names in prose.** Put `\newpage` before each major section for clean print pagination.
 
 ## Stance
 
-- Publish reorganizes and compresses **existing** content — it never adds material or re-critiques.
-  If you spot a genuine contradiction while condensing, note it in the cut report; don't silently fix
-  it (that's [rpg-critic](../rpg-critic/SKILL.md)/[rpg-revise](../rpg-revise/SKILL.md)).
-- One adventure = one `-published.md`; regenerable, so a re-run nukes and replaces it. The source and
-  critique files stay untouched.
-- Terse over complete-sounding. If a sentence doesn't change what happens at the table, cut it.
+- Publish reorganizes and compresses **existing** content — it never adds material or re-critiques. A
+  genuine contradiction spotted while condensing goes in the cut report, not a silent fix (that's
+  [rpg-critic](../rpg-critic/SKILL.md)/[rpg-revise](../rpg-revise/SKILL.md)).
+- One adventure = one `-published.md`; regenerable, so a re-run nukes and replaces it.
+- **If a sentence explains *why*, it belongs in PREP or is cut. If it tells the GM what to say, roll,
+  or resolve, it belongs in a table field, verbatim and terse.** That test resolves almost every call.

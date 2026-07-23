@@ -9,7 +9,7 @@ Blades in the Dark, Lancer, D&D, or anything else.
 | **rpg-dev** | Collaboratively develop an adventure — premise, NPCs, scenes — into one durable Markdown file. |
 | **rpg-critic** | Give a finished module a sharp, table-focused critical read and capture it as a critique-and-response log. |
 | **rpg-revise** | Fold a human-answered critique back into the module, applying the fixes you accepted. |
-| **rpg-publish** | Condense a revised adventure into a tight, dual-audience, publish-ready document, and render it to PDF / wiki. |
+| **rpg-publish** | Condense a revised adventure into a run-at-the-table document — a read-once PREP layer and a TABLE layer of pure primitives — and render it to PDF / wiki. |
 
 The natural loop: **dev → critic → (answer the critique) → revise → publish.**
 
@@ -38,8 +38,10 @@ Copy (or symlink) the skill folders into your global skills directory:
 
 ```bash
 git clone https://github.com/mburnamfink/rpg-dev-skills.git
+cd rpg-dev-skills
+mkdir -p "$HOME/.claude/skills"
 for s in rpg-dev rpg-critic rpg-revise rpg-publish; do
-  ln -s "$PWD/rpg-dev-skills/skills/$s" "$HOME/.claude/skills/$s"
+  ln -sfn "$PWD/skills/$s" "$HOME/.claude/skills/$s"
 done
 ```
 
