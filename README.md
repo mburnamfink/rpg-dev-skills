@@ -52,6 +52,7 @@ Per-project instead of global? Symlink into a project's `.claude/skills/` the sa
 Only `rpg-publish`'s render step needs anything beyond Claude Code:
 
 - `scripts/pdf.sh` — [pandoc](https://pandoc.org/) with a XeLaTeX engine
+- `scripts/wiki.sh` — [pandoc](https://pandoc.org/) (browsable HTML wiki; no LaTeX needed)
 - `scripts/render-cards.sh` — headless Chrome/Chromium
 
 The rest of the workflow is pure Markdown and needs nothing.

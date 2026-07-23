@@ -89,9 +89,10 @@ scene's. State each fact **once**, in its right home, and link.
 3. **Report the cuts** — a short list of what you compressed, merged, or moved to PREP, especially
    judgment calls, so the author can restore anything load-bearing. Never bury a real cut.
 4. **Offer to render.** Scripts ship under `scripts/` (resolve relative to this SKILL.md):
-   `scripts/pdf.sh <file>` (print packet; needs `pandoc`+`xelatex`), `scripts/gen-cards.py` (pregen
-   cards), `scripts/render-cards.sh` (card HTML → one-page PDF; needs headless Chrome), plus the wiki
-   HTML. Offer, don't assume.
+   `scripts/pdf.sh <file>` (print packet; needs `pandoc`+`xelatex`), `scripts/wiki.sh <file>`
+   (self-contained, browsable wiki HTML — sidebar nav and a GM/Player toggle that honours the
+   audience wall; needs `pandoc`), `scripts/gen-cards.py` (pregen cards), `scripts/render-cards.sh`
+   (card HTML → one-page PDF; needs headless Chrome). Offer, don't assume.
 
 ## The audience wall (ADR 0002 — fail-safe)
 
