@@ -8,6 +8,7 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+temp/*
 
 # Local Claude Code settings
 .claude/settings.local.json
