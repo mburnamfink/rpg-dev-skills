@@ -84,6 +84,10 @@ scene's. State each fact **once**, in its right home, and link.
 
 1. **Read everything first** — the source and any `*-critique*.md` (honour choices already made).
    Confirm the source path; write to `<slug>-published.md` **beside the source**; never touch the source.
+   Walk the context stack (`../rpg-dev/scripts/context_stack.py <source>`) to see what the adventure
+   sits inside — a campaign doc holding a running clock, portraits in a parent `image/`, an
+   `art_style.md` if you generate anything. Use it to check you aren't compressing away something
+   the stack expects this adventure to carry.
 2. **Draft the whole document in one pass** into the structure above ([TEMPLATE.md](TEMPLATE.md)).
    Quarantine reasoning into PREP; make every table field a primitive; tag audience; cross-link.
 3. **Report the cuts** — a short list of what you compressed, merged, or moved to PREP, especially
@@ -107,6 +111,12 @@ Content is **GM by default**. Promote only genuinely player-facing content:
 Linkify **structured** references — `(Scene 3)`, a named NPC block, `GM Briefing`, a named clock —
 with markdown anchors: `[Scene 3](#3-the-yammie-protest)`, `[Cordelia](#cordelia-ashworth)`. **Never
 auto-link bare names in prose.** Put `\newpage` before each major section for clean print pagination.
+
+**Links stay inside the published document.** The context stack is a prep-time convenience; at the
+table there is no repo. Anything inherited that the GM needs mid-scene — a recurring NPC's Look, a
+clock carried from the campaign doc, a rule the system file defines — gets **inlined as a primitive**,
+not linked upward. A published doc that needs a parent directory open to run has failed the golden
+rule. Say so in the cut report when you inline something this way.
 
 ## Stance
 

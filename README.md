@@ -15,12 +15,57 @@ Blades in the Dark, Lancer, D&D, or anything else.
 The natural loop: **dev → critic → (answer the critique) → revise → publish.**
 
 ## Best Practices
-It's useful to create rules, setting, and campaign lore reference docs which the skills can be pointed to. Claude can meaningfully summarize large documents into compact representations 
+
+Create rules, setting, and campaign lore reference docs the skills can draw on — Claude can
+summarize a large rulebook into a compact representation worth keeping. You can always point
+at them explicitly:
 
 ```
 /rpg-dev let's create an epic fantasy tale of sacrifice and triumph over evil 
 using @DnD2024.md and @ForgottenRealms.md and @SwordCoastChampions.md
 ```
+
+### Let the directory structure do it instead
+
+Better: **nest your adventures, and the skills find the context themselves.** An adventure
+inherits from every directory above it, out to the repo root:
+
+```
+my-games/
+  blades-68/              System — rules, setting lore
+    art_style.md          the visual house look for everything in this setting
+    draw-tables.md        setting-owned tables to draw scene detail from
+    draw-tables-flat.md   the same tables as numbered lists, for the sampler
+    the-long-con/         Campaign — campaign.md, the PCs, running clocks
+      01-recall/          Adventure — the module, its critique, its published form
+```
+
+Depth is up to you — drop the campaign layer for a one-shot, add a session layer below the
+adventure, name the top level whatever you like. Every skill walks the tree rather than
+assuming a shape:
+
+```
+~/work/bin/python ~/.claude/skills/rpg-dev/scripts/context_stack.py path/to/adventure.md
+```
+
+Prose reference **accumulates** — read broad to narrow, and where a campaign doc disagrees
+with the system book, the campaign wins. The two named assets resolve **nearest-wins**, so a
+single adventure can override its system's house look. See
+[CONTEXT-STACK.md](skills/rpg-dev/CONTEXT-STACK.md).
+
+### Draw tables beat the model's defaults
+
+A model asked to invent a detail returns the attractor — the fantasy name it has written a
+thousand times, the cobbled alley, the smoky jazz club. A `draw-tables-flat.md` in your
+setting directory fixes that, but only because the sampling happens *outside* the model:
+
+```
+~/work/bin/python ~/.claude/skills/rpg-dev/scripts/rolodex.py --from <adventure-dir> npc
+~/work/bin/python ~/.claude/skills/rpg-dev/scripts/rolodex.py --from <adventure-dir> location casino
+```
+
+Three candidates per slot, sometimes a wildcard. `rpg-dev` calls this during the NPC and
+Scene layers, then writes past what the dice put on the table.
 
 ## Casting NPC portraits
 

@@ -19,6 +19,10 @@ read intent, don't pattern-match keywords. `→ Status:` is usually blank; that'
 1. **Gather inputs.** The critique file (`*-critique*.md`). Read its metadata header to find the
    **module** it critiques and the **reference files** (setting/lore, campaign notes, system rules)
    it was checked against. Confirm the module path with the author before editing anything.
+   If the header lists no reference files, or the module has moved since, recover them by walking
+   the module's context stack — `../rpg-dev/scripts/context_stack.py <module-path>`; the
+   directories above the module are where canon lives
+   ([CONTEXT-STACK.md](../rpg-dev/CONTEXT-STACK.md)).
 2. **Read the whole module and the whole critique first.** Parse every finding into ID, severity,
    the critic's point + proposed fix, the author's Response, and Status. Build the work list.
 3. **Do the Z section first.** Section Z is author→LLM directives (rename an entity, drop an NPC,
@@ -51,7 +55,9 @@ or a fact in the lore.
   scene the finding cites.
 - **When a fix asserts a fact about the world** (a name, a faction, a rule, a timeline), grep the
   **reference files** to confirm the module now agrees with canon. Bend the module, not the setting,
-  unless the author says otherwise. Cite the reference file + section in your Status note.
+  unless the author says otherwise. Cite the reference file + section in your Status note. Where two
+  layers of the stack disagree, the **narrower wins** — a campaign doc that has moved a faction on
+  beats the system book, and that is not a contradiction to fix.
 - **When a fix changes a number or a rule** (pool size, a clock, an ability), grep the module for
   the other places that number/rule is stated and reconcile them so the game stays internally
   consistent — the kind of contradiction rpg-critic flags in section A.

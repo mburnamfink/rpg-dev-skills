@@ -13,11 +13,19 @@ System-agnostic: critique the module against **its own** rules and source materi
 
 ## Workflow
 
-1. **Gather inputs.** The module to critique, plus any **reference files** the user passes:
-   setting / world lore, campaign-level notes (what's happened, PC ties, established facts),
-   and system rules. These are **canon** — the module must not contradict them, and the system
-   lens is only as sharp as the rules file you're given. If the user names none but the repo
-   plausibly has them, ask which to check against before starting.
+1. **Gather inputs.** The module to critique, plus the **reference files** it is canon
+   against: setting / world lore, campaign-level notes (what's happened, PC ties, established
+   facts), and system rules. The module must not contradict them, and the system lens is only
+   as sharp as the rules file you have.
+
+   Files the user passes are authoritative. To find the ones they didn't mention, walk the
+   module's context stack — the directories above it hold exactly these files:
+   ```
+   ~/work/bin/python ../rpg-dev/scripts/context_stack.py <module-path>
+   ```
+   Confirm the shortlist with the user before starting rather than asking them to name files
+   blind, and note which layer each came from — a campaign doc overrides the system book where
+   they disagree. See [CONTEXT-STACK.md](../rpg-dev/CONTEXT-STACK.md).
 2. **Read the whole module first**, twice. Reference files are often long — don't read them
    top-down. Instead, list the entities the module names (factions, NPCs, tech, districts,
    named rules) and **grep the reference files for each** to pull the canon it leans on; read

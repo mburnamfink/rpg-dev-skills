@@ -9,6 +9,23 @@ Build an adventure *with* the user, one layer at a time, and persist it to a sin
 Markdown file. Never dump a finished adventure from one prompt — interview, propose,
 and confirm at each layer.
 
+## Start with the context stack
+
+An adventure inherits from the directories above it — a campaign's continuity, a system's
+lore and rules — and how many layers there are varies by project. Before authoring, walk it:
+
+```
+~/work/bin/python <skill>/scripts/context_stack.py <adventure-dir-or-.md>
+```
+
+It reports every ancestor's Markdown with line counts and resolves the named assets
+(`art_style.md`, `draw-tables.md`). Read broad → narrow; where layers disagree the narrower
+wins. Grep the long files for the entities this adventure names rather than reading them
+top-down. Full rules, including where to write a fact back: [CONTEXT-STACK.md](CONTEXT-STACK.md).
+
+If the user names reference files in the prompt, those are authoritative — the walk finds
+what they didn't think to mention.
+
 ## Workflow
 
 Work top-down. Do not advance a layer until the user is satisfied with the current one.
@@ -40,7 +57,9 @@ Work top-down. Do not advance a layer until the user is satisfied with the curre
    - **Advances** — what each outcome unlocks or closes off, so branches are real, not decorative
    - Ways in and ways out (how players arrive, how it resolves or escalates)
    - Complications the GM can drop in
-   - Sensory details: What does this place look like, sound like, smell like
+   - Sensory details: What does this place look like, sound like, smell like — draw these
+     too (`rolodex.py --from <adventure-dir> location <section>`, or `street`, or `threats`)
+     rather than reaching for the first image that fits the prose you just wrote
    Beats are fixed; the routes between them branch — give players several ways to reach each
    beat, not a single corridor.
 
@@ -56,6 +75,11 @@ Work top-down. Do not advance a layer until the user is satisfied with the curre
      Anselm: patient menace), *when it's fixed*. This is the default portrait expression; a
      scene can call for another. Omit for NPCs with no characteristic mood.
    - Be creative with names no Elara, Kael, Thorne, Voss, no -ae-, no noun-surnames. Name the linguistic origin of each name proposed.
+   - **Draw, don't invent.** If the stack has draw tables, source names, looks, professions
+     and traits from them — `rolodex.py --from <adventure-dir> npc` — and write past what
+     comes back. Picking "randomly" from a table you can read returns the attractor, which
+     is the same failure the no-Elara rule is aimed at. If the project ships its own
+     generator (a `scripts/gen-names.py` documented in its `CLAUDE.md`), prefer that.
    Start with the 2–4 NPCs the premise can't exist without; add minor ones later.
    Portraits are a separate skill: [rpg-npc-cast](../rpg-npc-cast/SKILL.md) reads the
    Visual/Cast/Register fields above. Run it in a **fresh session** — don't cast here — so
@@ -77,13 +101,19 @@ scrutiny as the cast:
 
 ## Artifact rules
 
-- **One adventure = one file.** Default path: `<campaign-slug>\<adventure-slug>.md` in the working
-  directory. Confirm the filename with the user on first write.
+- **One adventure = one file**, inside the campaign directory — either directly
+  (`<campaign>/<adventure-slug>.md`) or in its own folder when it has portraits and
+  published forms to keep together (`<campaign>/<NN-slug>/<slug>.md`). Match whatever the
+  stack already does; confirm the path with the user on first write, and pass it absolute.
 - Sections follow [TEMPLATE.md](TEMPLATE.md): Premise, Arc, NPCs, Scenes, plus optional
   GM Notes and Open Threads.
-- Artifacts are **standalone** — no cross-links between files.
-- Update the file incrementally as each layer is confirmed; keep it the single source
-  of truth so a fresh session can pick up the adventure from the file alone.
+- Adventures are **standalone with respect to their siblings** — never cross-link another
+  adventure. They *do* inherit from their ancestors: the system's lore and the campaign doc
+  are context, not things to copy in. Write each fact at the layer it belongs to
+  (see [CONTEXT-STACK.md](CONTEXT-STACK.md)) — a running clock or a recurring NPC belongs in
+  the campaign doc, not duplicated into every adventure that touches it.
+- Update the file incrementally as each layer is confirmed; a fresh session should be able
+  to pick the adventure up from this file plus its stack.
 
 ## Interaction style
 

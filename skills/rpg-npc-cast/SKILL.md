@@ -16,7 +16,7 @@ Same prompt recipe and layout either way — pick based on what the user pays fo
 
 - **API route** — the script calls Gemini and files the images automatically. Needs a
   billing-enabled Gemini API project (the free tier's image quota is 0; a consumer Google
-  AI Pro/Advanced subscription does **not** grant API access). ~$0.04/image.
+  AI Pro/Advanced subscription does **not** grant API access). roughly 4 US cents per image.
 - **Prep route (free with AI Pro)** — `--prep` sets up the folders and hands you the prompt;
   you generate in the Gemini app / AI Studio UI (covered by AI Pro), download the image
   into `image/source/`, and `--promote` it to current. No API key, no per-image cost.
@@ -43,10 +43,22 @@ Same prompt recipe and layout either way — pick based on what the user pays fo
 The script creates `image/` and `image/source/` on every run. `--npc "Tilda Merrick"`
 slugifies to `tilda-merrick`. Put reference images under `image/source/` yourself.
 
+**Pass `-a` as an absolute path.** It is resolved against the current working directory,
+which part-way through a session is often no longer the repo root. A relative path that
+worked earlier will then quietly build a nested duplicate tree (`<adv>/<adv>/image/…`) and
+file the portraits in it — the script reports success and the paths it prints look right,
+so the only symptom is that the portrait you asked for never changes.
+
 ## Workflow
 
 1. **Locate** the adventure file and the NPC(s) to cast. Read each NPC's
    Role/Wants/Secret/Voice/**Visual**/**Cast**, and the **Premise** for period and place.
+   Then walk the context stack for the setting's house look:
+   ```
+   ~/work/bin/python ../rpg-dev/scripts/context_stack.py <adventure-dir> --asset art_style
+   ```
+   It prints the nearest `art_style.md` (adventure overrides campaign overrides system) or
+   exits 1 if the project has none. See [CONTEXT-STACK.md](../rpg-dev/CONTEXT-STACK.md).
 2. **Write the prompt** per NPC using the recipe below. Confirm one prompt with the user
    before generating the whole cast — the house look should be agreed first.
 3. **Generate** — one of:
@@ -60,7 +72,8 @@ slugifies to `tilda-merrick`. Put reference images under `image/source/` yoursel
    - *Prep route:* add `--prep` (drop `-n`) — saves the prompt to
      `image/source/<npc>.prompt.txt` and prints it. Paste into the Gemini app, download the
      result into `image/source/`, then promote it (step 4).
-4. **Review** the images with the user; iterate on the prompt and regenerate, or promote a
+4. **Review** — read the variants against *each other* before reading them against the brief
+   (see Diagnosing a bad batch below), then iterate on the prompt and regenerate, or promote a
    variant/download: `cast-npc.py -a <dir> --npc "Tilda Merrick" --promote tilda-merrick-v2.png`.
    A refusal exits with code 2 and prints what the model said.
 5. **Record** the portrait under the NPC, e.g. `- **Portrait:** ![Tilda](image/tilda-merrick.png)`.
@@ -68,10 +81,21 @@ slugifies to `tilda-merrick`. Put reference images under `image/source/` yoursel
 ## The prompt recipe
 
 Build each prompt from these clauses, in order. The first clause is the **house look** —
-keep it identical across every NPC in a module so the cast reads as one production.
+keep it identical across every NPC so the cast reads as one production. When it comes from an
+`art_style.md` in the context stack, that clause is not yours to compose: it is the setting's,
+shared by every adventure under it.
 
-1. **Medium / house look** — e.g. *"Candid 35mm film photograph, muted desaturated color,
-   soft available light, grain, shallow depth of field."* Agree this once, reuse it.
+1. **Medium / house look** — **if the stack has an `art_style.md`, its master style block
+   *is* this clause. Paste it verbatim** and obey the rest of that file: its palette rule,
+   its negative prompt, its period content rules, and one of its compositional devices (one
+   or two, never stacked). Do not paraphrase a style block — it is tuned wording, and
+   rewording it is how a cast drifts apart between sessions.
+
+   With no `art_style.md`, write the clause yourself — e.g. *"Candid 35mm film photograph,
+   muted desaturated color, soft available light, grain, shallow depth of field"* — agree it
+   with the user, and once it's working **offer to save it as `art_style.md` at the broadest
+   layer it's true for** (usually the system directory, so the whole setting inherits it),
+   with the master block, the palette rule, and the negative prompt as separate sections.
 2. **Subject + age + likeness** — describe the *features* implied by the cast actor at the
    right age ("a slight, sharp-featured woman of about 19, heart-shaped face, wide-set pale
    eyes"). You may add "in the vein of a young <actor>" as a cue, but expect the model to
@@ -95,19 +119,71 @@ keep it identical across every NPC in a module so the cast reads as one producti
    undercurrent" washes the character into a pretty blank. Focus, not volume. Iterate by
    re-aiming this one clause.
 5. **Period + costume** — from the Visual line and the Premise's era.
-6. **Environment** — the light and place where the players meet them (dim curio shop, warm
-   lamplight, deep shadows).
-7. **Framing** — *head-and-shoulders portrait, single subject.* For a physically imposing
-   NPC, see Scale below — the default framing will erase their size.
+6. **Environment** — the light and place where the players meet them. Give it as **reduced
+   geometry and silhouettes, never an inventory of objects** — "the flat rectangle of a
+   chair-back and a doorframe behind him, reduced to plain geometric shapes" holds a
+   stylized look; "a lathe, a shelf of castings, a chandelier and tall arched windows"
+   reads as an instruction to *render*, and the face comes back softly modelled with the
+   house style gone. Budget about two background elements. A near-empty background is also
+   what gives a strong cast shadow room to work as its own graphic shape.
+7. **Framing** — *head-and-shoulders portrait, single subject.* For any composition that
+   departs from that, see Fighting the defaults below — a positive description of the shot
+   you want is not enough on its own.
+8. **Palette** — only if `art_style.md` defines palette regimes. Pick the regime from the
+   NPC's emotional register, not from the literal colors of the place they're standing in,
+   and hold to that file's accent rule.
 
-### Scale (imposing NPCs)
+### Fighting the defaults
 
-Left alone, the model returns a centered, eye-level, headroom-above medium shot that
-**neutralizes size** — a 6'4" enforcer comes out as an ordinary bloke. When the threat is
-physical, override the framing clause: shoot from a **low angle looking up**, let them
-**loom and overfill the frame with the crown cropped**, press neck and shoulders against the
-edges, add slight wide-lens foreshortening. Avoid seated or leaning-on-forearms poses — they
-shrink the subject and read as harmless.
+The model has strong priors about what a portrait is, and **a positive instruction gets
+averaged into the prior rather than replacing it.** Describing the shot you want, however
+vividly, loses to the default; naming the default and forbidding it wins. Whenever you
+depart from a centered, eye-level, headroom-above medium shot, write all three of:
+
+- **the camera as a physical fact** — where it is in space relative to the body
+  ("camera placed BELOW the level of his chest and tilted up"), not the effect you hope for
+  ("shot so that he looms");
+- **which edge crops what** — "the crown of his head is cropped by the top edge, his
+  shoulders run off both left and right edges, cut off at mid-chest by the bottom";
+- **an explicit prohibition naming the default** — "do not show his waist, hips or legs; do
+  not center him as a small standing figure in a room; do not shoot at eye level."
+
+**Scale (imposing NPCs)** is the usual case: left alone the default *neutralizes size*, and a
+6'4" enforcer comes out an ordinary bloke. Use the three clauses above with a low angle and
+slight wide-lens foreshortening, and avoid seated or leaning-on-forearms poses — they shrink
+the subject and read as harmless. The same three-part treatment is what to reach for any time
+a composition clause is being ignored.
+
+### Anything that isn't real
+
+Prosthetics, implants, ghosts, glowing anomalies — the model resolves underspecified
+strangeness to **the nearest mundane object**, reliably and repeatably. "A faint guttering
+blue at one temple" is a sticking plaster every single time. Give three things:
+
+- **mechanism** — what it physically is ("a fitting set into the skull where bone has been
+  replaced by machined metal, leaking a cold blue glow rendered as stippled grain");
+- **attachment and action** — what it joins to and what it is doing right now. An unattached
+  or idle feature becomes a prop: "a brass hand held up into the frame" returns a raised
+  wooden artist's mannequin hand; "the arm hangs down at his side, the brass hand closed
+  around a length of steel bar stock" returns a working limb;
+- **a disavowal** — name the mundane thing it must not be mistaken for ("absolutely not a
+  bandage, sticker, plaster or bruise"; "a working limb, not a gesture, never raised, never
+  open-palmed"). You can usually predict the wrong object from the first batch and name it.
+
+### Diagnosing a bad batch
+
+Generate `-n 3` and use the variants as a **test, not a menu**. Whether the three fail the
+same way tells you what to fix:
+
+- **All three fail identically** — the clause is not being read. Rewrite it; regenerating is
+  wasted money. Unanimity across variants is the signal, and it is reliable enough to act on
+  after one batch.
+- **The three differ** — the clause is landing and you are seeing sampling spread. Regenerate,
+  or promote the best.
+
+Subjects that depart from ordinary human physicality (imposing bodies, manufactured or
+non-human faces) need the most rounds; reach for the two sections above early with those
+rather than after three disappointing batches.
 
 See [RECIPE.md](RECIPE.md) for a full worked example (Tilda) and the reference-image (`-r`)
 restyle mode.
@@ -115,7 +191,10 @@ restyle mode.
 ## Notes
 
 - One subject per image; generate supporting NPCs separately, not as a group shot.
-- Keep the house-look clause byte-identical across the cast for visual cohesion.
+- Keep the house-look clause byte-identical across the cast for visual cohesion — and when
+  it comes from an `art_style.md` at system scope, that cohesion covers every adventure in
+  the setting, not just this module's cast. Improve the shared style by editing that file,
+  never by tweaking the clause in one prompt.
 - `cast-npc.py` is a thin wrapper: model default `gemini-2.5-flash-image`, override with
   `--model`. Filenames come from `--npc`; you never pass an output path.
 - `--aspect 2:3` (or any of 1:1, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9) sets the output
