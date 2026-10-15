@@ -118,3 +118,9 @@ restyle mode.
 - Keep the house-look clause byte-identical across the cast for visual cohesion.
 - `cast-npc.py` is a thin wrapper: model default `gemini-2.5-flash-image`, override with
   `--model`. Filenames come from `--npc`; you never pass an output path.
+- `--aspect 2:3` (or any of 1:1, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9) sets the output
+  shape through the API, not the prompt text, and overrides a `-r` reference's shape — an
+  approved square plate plus a "reproduce exactly, extend the scene to a tall frame" prompt
+  comes back as the same plate in the new shape. Every result is checked against the
+  requested ratio and a mismatch prints a WARNING. Use it whenever `art_style.md` asks for
+  a non-square plate.

@@ -22,6 +22,9 @@ It owns a per-adventure layout so the current face is always one grab from the t
     ~/work/bin/python cast-npc.py -a ../ashfall --npc tilda \
         -r ../ashfall/image/source/mckenzie.jpg -p "Keep this face. Restyle as ..."
 
+    # tall 2:3 plate; the returned image is checked against the requested ratio
+    ~/work/bin/python cast-npc.py -a ../ashfall --npc tilda --aspect 2:3 -p "..."
+
     # promote a chosen variant (or a manual download) to current, no generation
     ~/work/bin/python cast-npc.py -a ../ashfall --npc tilda --promote tilda-v2.png
 
@@ -44,6 +47,9 @@ from pathlib import Path
 
 DEFAULT_MODEL = "gemini-2.5-flash-image"
 MAX_TRIES = 3
+ASPECTS = ["1:1", "2:3", "3:2", "3:4", "4:3", "4:5", "5:4", "9:16", "16:9", "21:9"]
+# The model snaps to its own pixel grid (2:3 comes back 832x1248), so allow a little slack.
+ASPECT_TOLERANCE = 0.03
 
 
 def die(msg: str, code: int = 1) -> "None":
@@ -125,11 +131,34 @@ def extract_image(response):
     return None, "\n".join(texts).strip()
 
 
-def generate(client, model, contents):
+def image_size(data: bytes):
+    """(width, height) of image bytes, or None if Pillow is missing or can't read them."""
+    try:
+        import io
+        from PIL import Image
+        return Image.open(io.BytesIO(data)).size
+    except Exception:
+        return None
+
+
+def check_aspect(data: bytes, aspect: str, dest: Path):
+    size = image_size(data)
+    if size is None:
+        print(f"cast-npc: could not read {dest.name} to check its aspect ratio", file=sys.stderr)
+        return
+    w, h = size
+    want_w, want_h = (int(v) for v in aspect.split(":"))
+    want, got = want_w / want_h, w / h
+    if abs(got - want) / want > ASPECT_TOLERANCE:
+        print(f"cast-npc: WARNING {dest.name} is {w}x{h} ({got:.2f}), not the requested "
+              f"{aspect} ({want:.2f})", file=sys.stderr)
+
+
+def generate(client, model, contents, config=None):
     last_err = None
     for attempt in range(1, MAX_TRIES + 1):
         try:
-            return client.models.generate_content(model=model, contents=contents)
+            return client.models.generate_content(model=model, contents=contents, config=config)
         except Exception as e:  # transient 5xx / network / quota backoff
             last_err = e
             if attempt < MAX_TRIES:
@@ -165,6 +194,9 @@ def main():
     ap.add_argument("--prep", action="store_true",
                     help="set up the layout and save the prompt for manual generation in "
                          "the Gemini app (no API call; use with AI Pro)")
+    ap.add_argument("--aspect", choices=ASPECTS,
+                    help="output aspect ratio, e.g. 2:3; the result is checked against it "
+                         "(default: the model's choice — square, or the reference's shape)")
     ap.add_argument("--model", default=DEFAULT_MODEL, help=f"model id (default {DEFAULT_MODEL})")
     args = ap.parse_args()
 
@@ -181,7 +213,8 @@ def main():
         print(prompt_file.read_text(encoding="utf-8"), end="")
         print(f"cast-npc: prompt saved -> {prompt_file}\n"
               f"  1. paste it into the Gemini app / AI Studio (covered by AI Pro)\n"
-              f"  2. save the downloaded image into {source}/\n"
+              + (f"     choose aspect ratio {args.aspect} there\n" if args.aspect else "")
+              + f"  2. save the downloaded image into {source}/\n"
               f"  3. promote it:  cast-npc.py -a {args.adventure!r} --npc {args.npc!r} "
               f"--promote <file>", file=sys.stderr)
         return
@@ -197,9 +230,13 @@ def main():
 
     contents = [read_prompt(args), *load_reference_parts(args.reference, types)]
     client = genai.Client()
+    config = None
+    if args.aspect:
+        config = types.GenerateContentConfig(
+            image_config=types.ImageConfig(aspect_ratio=args.aspect))
 
     for i in range(1, args.variants + 1):
-        image, text = extract_image(generate(client, args.model, contents))
+        image, text = extract_image(generate(client, args.model, contents, config))
         if image is None:
             note = f" Model said: {text}" if text else ""
             die(f"no image returned (variant {i}) — likely refused or filtered.{note}", code=2)
@@ -210,6 +247,8 @@ def main():
             dest = next_variant_path(source, slug)
         dest.write_bytes(image)
         print(dest)
+        if args.aspect:
+            check_aspect(image, args.aspect, dest)
 
     extra = f" ({args.variants - 1} variant(s) in {source}/)" if args.variants > 1 else ""
     print(f"cast-npc: current portrait -> {current}{extra}", file=sys.stderr)
