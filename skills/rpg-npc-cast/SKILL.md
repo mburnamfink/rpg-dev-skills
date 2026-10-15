@@ -203,3 +203,5 @@ restyle mode.
   comes back as the same plate in the new shape. Every result is checked against the
   requested ratio and a mismatch prints a WARNING. Use it whenever `art_style.md` asks for
   a non-square plate.
+- When the house look is close but rewording isn't converging, measure it against the
+  reference art instead: see [STYLE-STUDY.md](STYLE-STUDY.md).
